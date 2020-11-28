@@ -12,7 +12,7 @@ $(function (){
     });
 
     $('input').blur(function (){
-        $(this).attr('placeholder', old_place); 
+        $(this).attr('placeholder', old_place)         ; 
 
         });
         

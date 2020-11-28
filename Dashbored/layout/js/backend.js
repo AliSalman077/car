@@ -12,7 +12,11 @@ $(function (){
     });
 
     $('input').blur(function (){
+<<<<<<< HEAD
         $(this).attr('placeholder', old_place)ll; 
+=======
+        $(this).attr('placeholder', old_place)ee; 
+>>>>>>> 83e8aa89bad5175183d8487e182718cc10a1b438
 
         });
         

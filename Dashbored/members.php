@@ -7,12 +7,46 @@
 
       $do=isset($_GET['do'])? $_GET['do']:'Mange';
       // start mange page 
-      if($do == 'Mange'){
-          //mange page 
-          echo 'Welcome to mange members Page <br>';
-
-         echo' <a href="?do=Add"> Add New member </a>';
-
+      if($do == 'Mange'){  //mange page 
+         // select the data 
+      $stmt=$con->prepare("SELECT * FROM users WHERE GroupID != 1");
+        // exeute the statment 
+      $stmt->execute();
+         // Assign to variable 
+      $rows=$stmt->fetchALL();
+      ?>
+         <h1 class="text-center">Mange Member</h1>
+         <div class="container"> </div>
+         <div class="table-responsive">
+            <table class="table text-center main-table " border=2px>
+                  <tr>
+                     <td> #ID</td>
+                     <td> UserName</td>
+                     <td> Email</td>
+                     <td> FullName</td>
+                     <td> Register date</td>
+                     <td> Control</td>
+                  </tr>
+                  <?php 
+                  foreach($rows as $row){
+                     echo '<tr>';
+                        echo'<td>'. $row['UserID']    .'</td>';
+                        echo'<td>'. $row['UserName']  .'</td>';
+                        echo'<td>'. $row['Email']     .'</td>';
+                        echo'<td>'. $row['FullName']  .'</td>';
+                        echo'<td>'.'</td>';
+                        echo'<td> <a href="?do=Edit&userid='.$row['UserID'].'" class=" btn btn-success">Edit</a>
+                                  <a href="#" class="btn btn-danger"> Delete</a>
+                              </td>';
+                     echo'</tr>';
+                  }
+                  ?>
+               </table>
+            </div>
+       <a href="?do=Add" class="btn btn-primary fa fa-plus"> Add New member </a>
+       </div>
+         <?php
+      //===================ADD=================ADD==============ADD==========================================   
       }elseif($do == 'Add'){
 
          // Add page      
@@ -65,11 +99,12 @@
               ';
 
                   echo $dataAddMember;
+      //=======================INSERT==================INSERT==============================================            
       }elseif( $do == 'insert'){
          // insert page 
          
          if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            echo"<h1 class='text-center'>update member</h1>";
+            echo"<h1 class='text-center'>ALis update member</h1>";
             echo "<div class='continer'>";
             // get variables from the form 
             $user    = $_POST['username'];
@@ -77,50 +112,49 @@
             $full    = $_POST['fullName'];
             $pass    = $_POST['password'];
             
-            $hasdpass=sha1($_POST("password"));
+            $hasdpass=sha1($pass);
 
-            // validate the form 
-            // $formErrors = array();
+           // validate the form 
+            $formErrors = array();
            
-            // if(empty($user))
-            //    $formErrors[] = 'UserName can\'t be empty ';
-            // if(empty($pass))
-            //    $formErrors[] = 'password can\'t be empty ';
-            // if(empty($email))
-            //    $formErrors[] = 'Email can\'t be empty ';
-            // if(empty($full))
-            //    $formErrors[] = 'FullName can\'t be empty ';
-            // foreach($formErrors as $errors){
-            //    echo "<div class='alert alert-danger'>";
-            //    echo $errors . '<br/>';
-            //    echo "</div>";
-            // }
-               
-            
-            // if(empty($formErrors)){
-          //  insert into dataBase 
+            if(empty($user))
+               $formErrors[] = 'UserName can\'t be empty ';
+            if(empty($pass))
+               $formErrors[] = 'password can\'t be empty ';
+            if(empty($email))
+               $formErrors[] = 'Email can\'t be empty ';
+            if(empty($full))
+               $formErrors[] = 'FullName can\'t be empty ';
+            foreach($formErrors as $errors){
+               echo "<div class='alert alert-danger'>";
+               echo $errors . '<br/>';
+               echo "</div>";
+            }
+            if(empty($formErrors)){
+           // insert into dataBase 
              $stmt=$con->prepare(
                                     "INSERT INTO
                                           users(UserName, Password, Email, FullName) 
-                                    VALUES(:zuser, :zpass, :zemail, :zname) ");
+                                       VALUES(:zuser, :zpass, :zemail, :zname) ");
            $stmt->execute(array(
 
                  'zuser'   => $user,
-                 'zpass'   => $hasdpass ,
+                 'zpass'   => $hasdpass,
                  'zemail'  => $email,
                  'zname'   => $full
                  
                ));
    
             echo "<div class='alert alert-success'>". $stmt->rowCount() . " record Inserted </div>";
-           // }
+            echo "</div>";
+            }
          }else{
             echo 'Bad idea';
    
          }
-         echo "</div>";
-   
-      
+         
+         
+      //===============================EDIT===================EDIT=============================================
       }elseif($do == 'Edit'){  // edit page 
          $userid = isset($_GET['userid']) && is_numeric($_GET['userid']) ? intval($_GET['userid']) :0;
          $stmt = $con->prepare(" SELECT * FROM Users WHERE UserID = ? LIMIT 1");
@@ -190,11 +224,15 @@
                   }else{
                      echo 'there is no such user ';
                   }
+       //  ==============UPDATE=========================UPDATE==============UPDATE=============================================
       }elseif($do == update){
-               echo"<h1 class='text-center'>update member</h1>";
-               echo "<div class='continer'>";
+               
                if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                  // get variables from the form 
+                  echo'<h1 class="text-center">update member</h1>';
+                  echo '<div class="continer">';
+
+                  // get variables from the form
+
                   $id      = $_POST['userid'];
                   $user    = $_POST['username'];
                   $email   = $_POST['email'];
@@ -218,10 +256,6 @@
                   }
                      
                   
-                  
-                  
-                  
-
                   if(empty($formErrors)){
                //  update the dataBase 
                   $stmt= $con->prepare(
@@ -234,12 +268,13 @@
                   $stmt->execute(array($user, $email, $full, $pass, $id));
 
                   echo "<div class='alert alert-success'>". $stmt->rowCount() . " record Update </div>";
+                  echo "</div>";
                }
                }else{
                   echo 'Bad idea';
 
                }
-               echo "</div>";
+              
 
    
        

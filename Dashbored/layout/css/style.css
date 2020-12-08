@@ -56,5 +56,9 @@ h1{
     right: -3px;
     top: 15;
 }
+.main-table tr:first-child td{
+    background-color: #333;
+    color: #FFF;
+}
 
 /* end members page */

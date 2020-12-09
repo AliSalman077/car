@@ -8,7 +8,7 @@
              </script>
            <script src="<?php echo $js;?>bootstrap.min.js"> 
             </script>
-            <script src="<?php echo $js;?>backend.js?v=3">     
+            <script src="<?php echo $js;?>backend.js?v=2">     
             </script>
         
             

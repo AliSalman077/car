@@ -36,7 +36,7 @@
                         echo'<td>'. $row['FullName']  .'</td>';
                         echo'<td>'.'</td>';
                         echo'<td> <a href="?do=Edit&userid='.$row['UserID'].'" class=" btn btn-success">Edit</a>
-                                  <a href="#" class="btn btn-danger"> Delete</a>
+                                  <a href="?do=Delete&userid='.$row['UserID'].'" class="btn btn-danger confirm "> Delete</a>
                               </td>';
                      echo'</tr>';
                   }
@@ -278,6 +278,24 @@
 
    
        
+            }elseif($do == Delete){
+       //  ==============DELETE=========================DELETE==============DELETE=============================================
+
+               $userid = isset($_GET['userid']) && is_numeric($_GET['userid']) ? intval($_GET['userid']) :0;
+               $stmt = $con->prepare(" SELECT * FROM Users WHERE UserID = ? LIMIT 1");
+               $stmt->execute(array($userid));
+               $count =$stmt->rowCount(); 
+              // print_r($row);
+                 if($stmt->rowCount() > 0){ 
+                  $stmt=$con->prepare("DELETE FROM users WHERE UserID = :zuser");
+                  $stmt->bindParam(":zuser", $userid);
+                  $stmt->execute();
+                  echo "<div class='alert alert-success'>". $stmt->rowCount() . " record Deleted </div>";
+                 }else{
+                    echo 'There is no such user';
+                 }
+                 header('location: members.php');
+                 exit();
             }     
         include $tpl . 'footer.php'; 
 }else{

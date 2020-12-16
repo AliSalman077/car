@@ -35,8 +35,8 @@
                         echo'<td>'. $row['Email']     .'</td>';
                         echo'<td>'. $row['FullName']  .'</td>';
                         echo'<td>'.'</td>';
-                        echo'<td> <a href="?do=Edit&userid='.$row['UserID'].'" class=" btn btn-success">Edit</a>
-                                  <a href="?do=Delete&userid='.$row['UserID'].'" class="btn btn-danger confirm "> Delete</a>
+                        echo'<td> <a href="?do=Edit&userid='.$row['UserID'].'" class=" btn btn-success"><i class="fa fa-edit"></i> Edit</a>
+                                  <a href="?do=Delete&userid='.$row['UserID'].'" class="btn btn-danger confirm "><i class="fa fa-close"></i>  Delete</a>
                               </td>';
                      echo'</tr>';
                   }
@@ -104,7 +104,7 @@
          // insert page 
          
          if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            echo"<h1 class='text-center'>ALis update member</h1>";
+            echo"<h1 class='text-center'> Insert  member</h1>";
             echo "<div class='continer'>";
             // get variables from the form 
             $user    = $_POST['username'];
@@ -149,7 +149,8 @@
             echo "</div>";
             }
          }else{
-            echo 'Bad idea';
+            $errorMsg = 'Bad idea';
+            HomeRedirect($errorMsg,5);
    
          }
          

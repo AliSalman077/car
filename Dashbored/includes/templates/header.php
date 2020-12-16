@@ -6,7 +6,7 @@
             <link rel="stylesheet" href="<?php echo $css;?>bootstrap.min.css" />
             <link rel="stylesheet" href="<?php echo $css;?>font-awesome.min.css" />
 
-            <link rel="stylesheet" href="<?php echo $css;?>style.css?v=3" />
+            <link rel="stylesheet" href="<?php echo $css;?>style.css?v=2" />
 
 
         </head>
